@@ -1,0 +1,15 @@
+{
+  "extends": "airbnb",
+  "parser": "babel-eslint",
+  "plugins": [
+    "react"
+  ],
+  "rules": {
+    "no-underscore-dangle": [
+      "warn",
+      {
+        "allowAfterThis": true
+      }
+    ]
+  }
+}
