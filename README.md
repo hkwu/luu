@@ -1,5 +1,5 @@
 # luu
-![Version](https://img.shields.io/npm/v/luu.svg)
+[![Latest Stable Version](https://img.shields.io/npm/v/luu.svg)](https://www.npmjs.com/package/luu)
 ![License](https://img.shields.io/github/license/hkwu/luu.svg)
 
 A Node.js client library for the University of Waterloo's Open Data API.
