@@ -179,8 +179,3 @@ export const Client = class {
     return `${this.constructor.BASE_API_URL}${sprintf(trimStart(endpoint, '/'), params)}.json?${querystring.stringify({ key: this._key })}`;
   }
 };
-
-export default {
-  Client,
-  Constants,
-};
