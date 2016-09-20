@@ -5,7 +5,6 @@
 A Node.js client library for the University of Waterloo's Open Data API.
 
 ## Installation
-Run
 
 ```bash
 npm install --save luu

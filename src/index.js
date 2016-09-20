@@ -165,7 +165,13 @@ export const Client = class {
    * @returns {Promise.<String|TypeError>} Resolves to the API response or a fetch network error.
    */
   request(endpoint, params = {}) {
-    return fetch(this._buildRequestUrl(endpoint, params)).then(response => response.json());
+    return fetch(this._buildRequestUrl(endpoint, params)).then((response) => {
+      if (!response.ok) {
+        throw new Error(`Encountered HTTP ${response.status}: ${response.statusText}.`);
+      }
+
+      return response.json();
+    });
   }
 
   /**
