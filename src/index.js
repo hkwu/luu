@@ -1,7 +1,8 @@
 import fetch from 'isomorphic-fetch';
 import querystring from 'querystring';
+import { isPlainObject } from 'lodash/lang';
 import { trimStart } from 'lodash/string';
-import { sprintf } from 'sprintf-js';
+import { sprintf, vsprintf } from 'sprintf-js';
 
 /**
  * Endpoint constants.
@@ -161,10 +162,14 @@ export const Client = class {
   /**
    * Makes a request to the API.
    * @param {String} endpoint - The endpoint to hit.
-   * @param {Object} params - The parameters to substitute into the endpoint string.
+   * @param {Object|Array.<String|Number>} params - The parameters to substitute into the endpoint string.
    * @returns {Promise.<String|TypeError>} Resolves to the API response or a fetch network error.
    */
-  request(endpoint, params = {}) {
+  request(endpoint, params) {
+    if (!Array.isArray(params) && !isPlainObject(params)) {
+      throw new TypeError('Parameters given must be in an array or a plain object.');
+    }
+
     return fetch(this._buildRequestUrl(endpoint, params)).then((response) => {
       if (!response.ok) {
         throw new Error(`Encountered HTTP ${response.status}: ${response.statusText}.`);
@@ -177,11 +182,15 @@ export const Client = class {
   /**
    * Constructs the request URL.
    * @param {String} endpoint - The endpoint to hit.
-   * @param {Object} params - The parameters to substitute into the endpoint string.
+   * @param {Object|Array.<String|Number>} params - The parameters to substitute into the endpoint string.
    * @returns {String} The request URL.
    * @private
    */
   _buildRequestUrl(endpoint, params) {
-    return `${this.constructor.BASE_API_URL}${sprintf(trimStart(endpoint, '/'), params)}.json?${querystring.stringify({ key: this._key })}`;
+    const formattedEndpoint = Array.isArray(params)
+      ? vsprintf(trimStart(endpoint.replace(/%\(.+?\)s/g, '%s'), '/'), params)
+      : sprintf(trimStart(endpoint, '/'), params);
+
+    return `${this.constructor.BASE_API_URL}${formattedEndpoint}.json?${querystring.stringify({ key: this._key })}`;
   }
 };
