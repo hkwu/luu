@@ -19,19 +19,13 @@ import { Client } from 'luu';
 const client = new Client('YOUR_API_KEY');
 ```
 
-Or, with `require()`,
-
-```js
-const luu = require('luu');
-
-const client = new luu.Client('YOUR_API_KEY');
-```
-
 Make a request.
 
 ```js
-// request() returns a promise which resolves to the JSON response from the API
+// request() returns a promise which resolves to a Fetch Response object
+// the client will reject the promise automatically for non 200-level HTTP responses
 client.request('foodservices/menu')
+  .then(response => response.json())
   .then(console.log)
   .catch(console.error);
 ```

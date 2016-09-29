@@ -162,10 +162,10 @@ export const Client = class {
   /**
    * Makes a request to the API.
    * @param {String} endpoint - The endpoint to hit.
-   * @param {Object|Array.<String|Number>} params - The parameters to substitute into the endpoint string.
+   * @param {Object|Array.<String|Number>} [params={}] - The parameters to substitute into the endpoint string.
    * @returns {Promise.<String|TypeError>} Resolves to the API response or a fetch network error.
    */
-  request(endpoint, params) {
+  request(endpoint, params = {}) {
     if (!Array.isArray(params) && !isPlainObject(params)) {
       throw new TypeError('Parameters given must be in an array or a plain object.');
     }
@@ -175,7 +175,7 @@ export const Client = class {
         throw new Error(`Encountered HTTP ${response.status}: ${response.statusText}.`);
       }
 
-      return response.json();
+      return response;
     });
   }
 
